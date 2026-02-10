@@ -51,7 +51,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
 // Navbar background change on scroll
 const navbar = document.querySelector('.navbar');
-let lastScroll = 0;
 
 window.addEventListener('scroll', () => {
     const currentScroll = window.pageYOffset;
@@ -63,8 +62,6 @@ window.addEventListener('scroll', () => {
         navbar.style.background = 'rgba(26, 26, 46, 0.95)';
         navbar.style.boxShadow = 'none';
     }
-    
-    lastScroll = currentScroll;
 });
 
 // Intersection Observer for fade-in animations
@@ -133,8 +130,8 @@ document.addEventListener('mousemove', (e) => {
 
 // Animate flame particles based on mouse position
 const flameParticles = document.querySelectorAll('.flame-particle');
-setInterval(() => {
-    flameParticles.forEach((particle, index) => {
+const animateParticles = () => {
+    flameParticles.forEach((particle) => {
         const rect = particle.getBoundingClientRect();
         const particleX = rect.left + rect.width / 2;
         const particleY = rect.top + rect.height / 2;
@@ -142,10 +139,11 @@ setInterval(() => {
         const deltaX = (mouseX - particleX) * 0.01;
         const deltaY = (mouseY - particleY) * 0.01;
         
-        const currentTransform = particle.style.transform || '';
         particle.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
     });
-}, 50);
+    requestAnimationFrame(animateParticles);
+};
+animateParticles();
 
 // Add loading animation
 window.addEventListener('load', () => {
